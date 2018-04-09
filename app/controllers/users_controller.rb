@@ -17,11 +17,10 @@ class UsersController < ApplicationController
 	end
 	
 	def create
-		if User.where(short_user_params).length == 0
-			user = User.create(user_params)
-			p user.inspect
+		if User.where(short_user_params).empty?
+			user = User.new(user_params)
 
-			if user
+			if user.save
 				render json: user.as_json(only: [:username, :email, :authentication_token]), status: :created
 			else
 				head(:unauthorized)

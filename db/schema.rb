@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180403230922) do
+ActiveRecord::Schema.define(version: 20180406194115) do
+
+  create_table "deck_infos", force: :cascade do |t|
+    t.string "deck_type", null: false
+    t.string "red"
+    t.string "black"
+    t.string "hearts"
+    t.string "diamonds"
+    t.string "clubs"
+    t.string "spades"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
+    t.integer "deck_info_id"
     t.string "username", default: "", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -28,6 +41,7 @@ ActiveRecord::Schema.define(version: 20180403230922) do
     t.datetime "updated_at", null: false
     t.string "authentication_token", limit: 30
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
+    t.index ["deck_info_id"], name: "index_users_on_deck_info_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
