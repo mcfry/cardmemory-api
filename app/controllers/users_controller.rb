@@ -23,10 +23,10 @@ class UsersController < ApplicationController
 			if user.save
 				render json: user.as_json(only: [:username, :email, :authentication_token]), status: :created
 			else
-				head(:unauthorized)
+				head(:bad_request)
 			end
 		else
-			head(:unauthorized)
+			head(:not_found)
 		end
 	end
 

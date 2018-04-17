@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180406194115) do
+ActiveRecord::Schema.define(version: 20180409225304) do
+
+  create_table "cards", force: :cascade do |t|
+    t.integer "deck_info_id"
+    t.integer "suit"
+    t.integer "card_number"
+    t.string "image_url"
+    t.string "name"
+    t.string "action1"
+    t.string "action2"
+    t.index ["deck_info_id"], name: "index_cards_on_deck_info_id"
+  end
 
   create_table "deck_infos", force: :cascade do |t|
     t.string "deck_type", null: false
