@@ -1,7 +1,7 @@
 class Card < ApplicationRecord
 	
 	# Relations
-	belongs_to :deck_info
+	belongs_to :deck
 
 	# Validations
 	validate :validate_quota, on: :create
@@ -10,8 +10,8 @@ class Card < ApplicationRecord
 	LIMIT = 52
 
 	def validate_quota
-		return unless self.deck_info
-		if self.deck_info.cards.count >= LIMIT
+		return unless self.deck
+		if self.deck.cards.count >= LIMIT
 			errors.add(:base, :exceeded_quota)
 		end
 	end

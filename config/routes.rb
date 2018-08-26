@@ -16,6 +16,9 @@ Rails.application.routes.draw do
 	  	post 'deck_infos/' => 'deck_infos#create', as: :new_deck_info
 	  	patch 'deck_infos/' => 'deck_infos#update', as: :edit_deck_info
 	  	delete 'deck_infos/' => 'deck_infos#destroy', as: :delete_deck_info
+
+	  	get 'best_times/' => 'best_times#show', as: :show_best_time
+	  	post 'best_times/' => 'best_times#create', as: :new_best_time
 	  end
 	end
 

@@ -3,7 +3,8 @@ class User < ApplicationRecord
 	acts_as_token_authenticatable
 
 	# Relations
-	belongs_to :deck_info, optional: true
+	has_one :deck
+	has_many :best_times
 
 	# Include default devise modules. Others available are:
 	# :confirmable, :lockable, :timeoutable and :omniauthable

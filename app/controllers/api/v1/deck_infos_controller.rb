@@ -2,11 +2,11 @@ class Api::V1::DeckInfosController < ApplicationController
 
 	def show
 		if user_signed_in?
-			if current_user.deck_info
-				cards = current_user.deck_info.sorted_cards
+			if current_user.deck
+				cards = current_user.deck.sorted_cards
 
 				simple_object = Hash.new
-				simple_object[:deck_info] = current_user.deck_info
+				simple_object[:deck_info] = current_user.deck.deck_info
 				simple_object[:cards] = cards.presence ? cards : {}
 
 				render json: simple_object.as_json, status: :ok
@@ -23,8 +23,11 @@ class Api::V1::DeckInfosController < ApplicationController
 			deck_info = DeckInfo.where(deck_info_params).first
 			deck_info ||= DeckInfo.create(deck_info_params)
 
-			current_user.deck_info_id = deck_info.id
-			current_user.save
+			if !current_user.deck
+				Deck.create(deck_info_id: deck_info.id, user_id: current_user.id)
+			else
+				head(:unauthorized)
+			end
 
 			head(:created)
 		else
@@ -34,7 +37,7 @@ class Api::V1::DeckInfosController < ApplicationController
 
 	def update
 		if user_signed_in?
-			deck = current_user.deck_info
+			deck = current_user.deck
 			if deck
 				card_slots = deck.sorted_cards
 				(1..4).each do |suit|
@@ -52,12 +55,12 @@ class Api::V1::DeckInfosController < ApplicationController
 								action2: client_slot[:action2]
 							}
 
-							existing = Card.where(deck_info_id: deck.id, suit: suit, card_number: denom).first
+							existing = Card.where(deck_id: deck.id, suit: suit, card_number: denom).first
 							if existing
 								existing.update(new_hash)
 							else
 								new_card = Card.create(new_hash)
-								new_card.deck_info_id = deck.id
+								new_card.deck_id = deck.id
 								new_card.save
 							end
 						end
