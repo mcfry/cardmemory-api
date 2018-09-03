@@ -7,6 +7,8 @@ class MemoryPalace < ApplicationRecord
 	# Validations
 	attr_accessor :skip_name_validation
 	validate :validate_name, on: :create, unless: :skip_name_validation
+	before_destroy :validate_name
+	around_destroy :purge_images
 
 	def image_urls
 		if self.images.attached?
@@ -19,6 +21,15 @@ class MemoryPalace < ApplicationRecord
 	end
 
 	private
+
+		def purge_files
+			images = self.images.attached? ? self.images : [];
+			yield # yield and delete
+			images.each do |image|
+				puts "deleted #{image.filename}"
+				image.purge
+			end
+		end
 
 		def validate_name
 			self.name != 'default'
