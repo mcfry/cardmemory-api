@@ -5,7 +5,9 @@ class Api::V1::BestTimesController < ApplicationController
 			ordered_times = current_user.best_times.order('difficulty ASC').order('seconds ASC').group_by(&:difficulty)
 			render json: ordered_times.as_json, status: :ok
 		else
-			head(:unauthorized)
+			render json: {
+				message: 'You must be signed in to view your personal best times.'
+			}.to_json, status: :unauthorized
 		end
 	end
 
@@ -16,9 +18,7 @@ class Api::V1::BestTimesController < ApplicationController
 				# 5 is the limit
 				last_beaten = nil
 				if ordered_times.length > 4
-					puts best_times_params[:seconds]
 					ordered_times.each do |time|
-						puts time.seconds
 						if best_times_params[:seconds] < time.seconds
 							last_beaten = time
 						elsif best_times_params[:seconds] == time.seconds && best_times_params[:mistakes] < time.mistakes
@@ -33,7 +33,6 @@ class Api::V1::BestTimesController < ApplicationController
 						mistakes: best_times_params[:mistakes], difficulty: best_times_params[:difficulty])
 				end
 
-				puts last_beaten.inspect
 				if !last_beaten.blank?
 					last_beaten.delete
 					BestTime.create(user_id: current_user.id, seconds: best_times_params[:seconds], 
@@ -46,7 +45,9 @@ class Api::V1::BestTimesController < ApplicationController
 				head(:ok)
 			end
 		else
-			head(:unauthorized)
+			render json: {
+				message: 'There was an error trying to add the time to the scoreboard.'
+			}.to_json, status: :unauthorized
 		end
 	end
 

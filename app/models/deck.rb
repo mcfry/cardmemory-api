@@ -27,9 +27,17 @@ class Deck < ApplicationRecord
 		(2..14).each do |potential_denom|
 			denoms[potential_denom] ||= {
 				image_url: '',
+				image_tx: nil,
+				image_ty: nil,
+				image_h: nil,
+				image_w: nil,
 				name: '',
 				action1: '',
-				action2: ''
+				action2: '',
+				action2_tx: nil,
+				action2_ty: nil,
+				action2_h: nil,
+				action2_w: nil
 			}
 		end
 

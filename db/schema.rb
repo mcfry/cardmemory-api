@@ -10,7 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180814075832) do
+ActiveRecord::Schema.define(version: 2018_09_03_002339) do
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.integer "record_id", null: false
+    t.integer "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "best_times", force: :cascade do |t|
     t.integer "user_id"
@@ -27,9 +48,17 @@ ActiveRecord::Schema.define(version: 20180814075832) do
     t.integer "suit"
     t.integer "card_number"
     t.string "image_url"
+    t.float "image_tx"
+    t.float "image_ty"
+    t.float "image_h"
+    t.float "image_w"
     t.string "name"
     t.string "action1"
     t.string "action2"
+    t.float "action2_tx"
+    t.float "action2_ty"
+    t.float "action2_h"
+    t.float "action2_w"
     t.index ["deck_id"], name: "index_cards_on_deck_id"
   end
 
@@ -52,6 +81,14 @@ ActiveRecord::Schema.define(version: 20180814075832) do
     t.datetime "updated_at", null: false
     t.index ["deck_info_id"], name: "index_decks_on_deck_info_id"
     t.index ["user_id"], name: "index_decks_on_user_id"
+  end
+
+  create_table "memory_palaces", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_memory_palaces_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

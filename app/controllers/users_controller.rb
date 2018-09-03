@@ -17,16 +17,24 @@ class UsersController < ApplicationController
 	end
 	
 	def create
-		if User.where(short_user_params).empty?
-			user = User.new(user_params)
+		if User.where(username: short_user_params[:username]).empty?
+			if User.where(email: short_user_params[:email]).empty?
+				user = User.new(user_params)
 
-			if user.save
-				render json: user.as_json(only: [:username, :email, :authentication_token]), status: :created
+				if user.save
+					render json: user.as_json(only: [:username, :email, :authentication_token]), status: :created
+				else
+					head(:unprocessable_entity)
+				end
 			else
-				head(:bad_request)
+				render json: {
+					message: 'Email already exists, please try again.'
+				}.to_json, status: :unprocessable_entity
 			end
 		else
-			head(:not_found)
+			render json: {
+				message: 'Username already exists, please try again.'
+			}.to_json, status: :unprocessable_entity
 		end
 	end
 
@@ -44,7 +52,9 @@ class UsersController < ApplicationController
 		if user.destroy
 			head(:ok)
 		else
-			head(:unprocessable_entity)
+			render json: {
+				message: 'Could not delete user, please try again.'
+			}.to_json, status: :unprocessable_entity
 		end
 	end
 
