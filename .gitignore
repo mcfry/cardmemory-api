@@ -17,4 +17,7 @@
 !/log/.keep
 !/tmp/.keep
 
+# Ignore all storage files.
+/storage/*
+
 .byebug_history
