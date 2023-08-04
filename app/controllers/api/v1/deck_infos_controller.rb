@@ -78,7 +78,7 @@ class Api::V1::DeckInfosController < ApplicationController
 					end
 				end
 
-				head(:accepted)
+				head(:ok)
 			else
 				head(:not_found)
 			end

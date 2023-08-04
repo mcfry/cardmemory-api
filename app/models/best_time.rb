@@ -1,7 +1,7 @@
 class BestTime < ApplicationRecord
 
 	# Other
-	enum difficulty: {easy: 0, medium: 1, hard: 2}
+	enum difficulty: {easy: 0, medium: 1, hard: 2, very_hard: 3}
 
 	# Relations
 	belongs_to :user, optional: true

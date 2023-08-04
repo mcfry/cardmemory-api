@@ -20,8 +20,9 @@ Rails.application.routes.draw do
 	  	get 'best_times/' => 'best_times#show', as: :show_best_time
 	  	post 'best_times/' => 'best_times#create', as: :new_best_time
 
-	  	get 'memory_palaces/' => 'memory_palaces#show', as: :show_memory_palaces
-	  	post 'memory_palaces/' => 'memory_palaces#create', as: :new_memory_palace
+	  	get 'memory_palaces/' => 'memory_palaces#show', as: :show_memory_palace
+	  	post 'memory_palaces/attach_image' => 'memory_palaces#attach_image', as: :attach_image_to_memory_palace
+	  	patch 'memory_palaces/' => 'memory_palaces#update', as: :edit_memory_palace
 	  	delete 'memory_palaces/' => 'memory_palaces#destroy', as: :delete_memory_palace
 	  end
 	end
